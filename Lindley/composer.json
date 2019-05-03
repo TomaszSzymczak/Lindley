@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": { "Lindley\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/",
+            "/Examples/",
+            "/Docs/"
+        ]
+    }
+}
