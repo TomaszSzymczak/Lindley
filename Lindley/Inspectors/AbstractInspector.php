@@ -20,19 +20,22 @@ abstract class AbstractInspector
      * @param array  $filters
      * @param array  $filterSets
      */
-    public function __construct( $node, array $filters, array $filterSets )
+    public function __construct( $node, array $filters, array $filterSets, bool $breakOnFirstFail = true )
     {
         $this->filters = $filters;
         $this->node = $node;
         $this->filterSets = $filterSets;
 
-        $this->inspect();
+        $this->inspect( $breakOnFirstFail );
     }
 
-    // TODO
-    public function inspect()
+    /**
+     * @return void
+     */
+    public function inspect( $breakOnFirstFail )
     {
         foreach ( $this->filters as $filterData ) {
+            // fetch filter name and filter args
             if ( is_array( $filterData ) ) {
                 $filterName = array_shift( $filterData );
                 $filterArgs = $filterData; // beware of objects inside array
@@ -56,6 +59,7 @@ abstract class AbstractInspector
                     $error = $e;
                 }
 
+                // if null maybe we'll find filter in another FilterSet
                 if ( is_bool( $filterResult ) || ! is_null( $error ) ) {
                     $this->addFilterResult(
                         $filterName,
@@ -68,7 +72,18 @@ abstract class AbstractInspector
                 }
             } // /foreach
 
-            if ( is_null( $filterResult ) || ! $filterResult ) {
+            // if filter was not found in all FilterSets,
+            // finally we need to add null to filterName result
+            if ( is_null( $filterResult ) ) {
+                $this->addFilterResult(
+                    $filterName,
+                    $filterResult,
+                    get_class( $filterSet ),
+                    $error
+                );
+            }
+
+            if ( $breakOnFirstFail && ( is_null( $filterResult ) || ! $filterResult ) ) {
                 break;
             }
         } // /foreach
