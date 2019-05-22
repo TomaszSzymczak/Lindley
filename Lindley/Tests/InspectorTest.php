@@ -1,7 +1,6 @@
 <?php
 
 use \Lindley\Inspectors\SimpleInspector as Inspector;
-use \Lindley\FilterSets\AbstractFilterSet;
 
 class InspectorTest extends \PHPUnit\Framework\TestCase
 {

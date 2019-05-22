@@ -15,7 +15,7 @@ class SimpleFunnel
         $this->inspectorFactory = $inspectorFactory;
     }
 
-    public function filter( array $nodes, array $filters, array $filterSets )
+    public function filter( array $nodes, array $filters, array $filterSets ) : array
     {
         return array_values( array_filter(
             $nodes,
@@ -28,10 +28,10 @@ class SimpleFunnel
     }
 
     /**
-     * [order description]
-     * @param  array  $nodes [description]
-     * @param  array  $order [description]
-     * @return [type]        [description]
+     * @param  array  $nodes things to order
+     * @param  FunnelOrder[]  $order
+     * 
+     * @return array
      */
     public function order( array $nodes, array $order )
     {
@@ -49,9 +49,9 @@ class SimpleFunnel
     /**
      * Order array of nodes
      * 
-     * @param  array   $nodes Array of things to order
-     * @param  closure $orderBy Closure to get "order value"
-     * @param  string  $order   'ASC' or 'DESC'
+     * @param  array   $nodes    Array of things to order
+     * @param  \Closure $orderBy Closure to get "order value"
+     * @param  string  $order    'ASC' or 'DESC'
      * 
      * @return array
      */

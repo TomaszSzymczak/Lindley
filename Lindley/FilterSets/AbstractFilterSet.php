@@ -6,16 +6,17 @@ use Lindley\AbstractSingleton;
 abstract class AbstractFilterSet extends AbstractSingleton
 {
     /**
-     * UWAGA: przetestować przed rozszerzeniem o nowe frazy
-     * pamiętać, że "without" zawiera "with",
-     * stąd taka kolejność
+     * Please test before extending by new phrases
+     * phrases that contains their opposites should be key.
+     * eg. 'without' => 'with'
      * 
      * @var array
      */
     protected $oppositionPairs = [
         'without' => 'with',
         'isNot' => 'is',
-        'areNot' => 'are'
+        'areNot' => 'are',
+        'hasNot' => 'has',
     ];
 
     protected function __construct()
@@ -27,11 +28,9 @@ abstract class AbstractFilterSet extends AbstractSingleton
     }
 
     /**
-     * Szuka czy istnieje podany filtr
-     * i jeśli tak zwraca, jak go użyć
-     * 
      * @param  string $filterName
-     * @return object filterManual
+     * 
+     * @return object|null filterManual
      */
     protected function findFilterManual( $filterName )
     {
@@ -64,12 +63,21 @@ abstract class AbstractFilterSet extends AbstractSingleton
     protected function createFilterManual( $filterName, $howToUse )
     {
         return (object) [
-            'filterName' => $filterName,
+            'filterToCall' => $filterName,
             'howToUse' => $howToUse,
         ];
     }
 
-    public function filter( $node, string $filterName, array $filterArgs )
+    /**
+     * Filters
+     * 
+     * @param  any $node
+     * @param  string $filterName
+     * @param  array  $filterArgs args which help filtering
+     * 
+     * @return bool|null null if filter is not found
+     */
+    public function filter( $node, string $filterName, array $filterArgs = [] )
     {
         $manual = $this->findFilterManual( $filterName );
 
@@ -77,9 +85,12 @@ abstract class AbstractFilterSet extends AbstractSingleton
             return null;
         }
 
-        //$result = $this->{$manual->filterName}( $node );
+        /*$result = $this->{$manual->filterToCall}(
+            ...array_merge( [$node], $filterArgs )
+        );*/ /* TODO: ... vs below performance */
+
         $result = call_user_func_array(
-            [$this, $manual->filterName],
+            [$this, $manual->filterToCall],
             array_merge( [$node], $filterArgs )
         );
 
