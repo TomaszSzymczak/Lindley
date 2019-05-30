@@ -6,12 +6,12 @@
 * [FilterSets](#filtersets)
 * [Inspectors](#inspectors)
 * [Funnels](#funnels)
-* [FunnelOrders](#funnelsorders)
+* [FunnelOrders](#funnelorders)
 
 ## What is it?
 It is a tool to filter, validate and order data.
 
-## Why? Explainded by example
+## Why? Explained by example
 
 Lets assume that we have an array of car objects ($cars)  
 and that car object is defined as follows:
