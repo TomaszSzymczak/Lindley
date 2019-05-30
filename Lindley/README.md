@@ -1,5 +1,13 @@
 # Lindley
 
+* [What is it?](#what-is-it)
+* [Why? Explained by example](#why-explained-by-example)
+* [Why?](#why)
+* [FilterSets](#filtersets)
+* [Inspectors](#inspectors)
+* [Funnels](#funnels)
+* [FunnelOrders](#funnelsorders)
+
 ## What is it?
 It is a tool to filter, validate and order data.
 
@@ -225,7 +233,7 @@ $results = $funnel->filter(
 $results will be array of cars which meets requirements given as second argument,
 checked by filter sets given as third parameter.
 
-## FunnelOrder
+## FunnelOrders
 
 You can create it, to order nodes which come out from the Funnel.
 ```
