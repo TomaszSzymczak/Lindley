@@ -14,7 +14,7 @@ class FunnelOrder
      * @param string   $order   ASC|DESC
      * @param string   $type    eg. numeric
      */
-    public function __construct( \Closure $orderBy, string $order, string $type )
+    public function __construct( \Closure $orderBy, string $order, string $type = 'numeric' )
     {
         $this->orderBy = $orderBy;
         $this->order = $order;
